@@ -21,22 +21,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 
 class SecondActivity : ComponentActivity() {
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-
             val i = intent.getIntExtra("counter", 0)
             val name : String = intent.getStringExtra("user name").toString()
             myFirstTable(name)
-
         }
     }
-
 }
-
 @Composable
 fun myFirstTable(n: String){
     val pResource = painterResource(R.drawable.pic)
@@ -52,13 +46,10 @@ fun myFirstTable(n: String){
                    Image(pResource, "image in the row")
                }
            }
-
         }
         Button(onClick = {
-
         }) { Text("Back") }
     }
-
 }
 
 

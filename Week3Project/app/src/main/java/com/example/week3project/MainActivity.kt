@@ -45,7 +45,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
 @Composable
 fun Counter() {
     val context = LocalContext.current
