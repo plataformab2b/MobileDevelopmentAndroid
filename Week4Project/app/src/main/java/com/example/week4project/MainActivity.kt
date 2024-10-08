@@ -28,7 +28,6 @@ import com.example.week4project.ViewModel.ProductViewModelFactory
 import com.example.week4project.Views.MyBottomBar
 import com.example.week4project.Views.MyFavButton
 import com.example.week4project.Views.MyTopBar
-import com.example.week4project.Views.ProductList
 import com.example.week4project.ui.theme.Week4ProjectTheme
 
 class MainActivity : ComponentActivity() {
@@ -42,7 +41,8 @@ class MainActivity : ComponentActivity() {
         var mainlist =  myProductViewModel.getListOfProducts()
         setContent {
             Week4ProjectTheme {
-                MyFirstScaffold(mainlist )
+
+               MyFirstScaffold(mainlist)
             }
         }
     }
@@ -52,6 +52,7 @@ class MainActivity : ComponentActivity() {
 
     }
 }
+
 
 @Composable
 fun SwitchBackgroundChange(modifier: Modifier) {
@@ -80,7 +81,8 @@ fun MyFirstScaffold(list: ArrayList<Product>) {
 
         innerPadding ->
             Column {
-                ProductList(Modifier.padding(innerPadding), list)
+                SwitchBackgroundChange(Modifier.padding(innerPadding))
+               // ProductList(Modifier.padding(innerPadding), list)
             }
         }
 }
