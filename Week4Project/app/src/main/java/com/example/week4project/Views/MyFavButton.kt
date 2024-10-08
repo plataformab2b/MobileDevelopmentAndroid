@@ -1,4 +1,4 @@
-package com.example.week4project
+package com.example.week4project.Views
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -9,7 +9,6 @@ import androidx.compose.runtime.Composable
 @Composable
 fun MyFavButton(){
     FloatingActionButton(onClick = {
-
     }) {
         Icon(Icons.Default.Add, contentDescription = null)
     }

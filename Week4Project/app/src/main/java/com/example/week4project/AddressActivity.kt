@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
+import com.example.week4project.Model.Address
 import com.example.week4project.ui.theme.Week4ProjectTheme
 
 class AddressActivity : ComponentActivity()  {
@@ -24,7 +25,6 @@ class AddressActivity : ComponentActivity()  {
         var addressFromMainActivity =  intent.getParcelableExtra<Address>("myaddress")
         setContent {
             Week4ProjectTheme {
-
               Column (modifier =  Modifier.fillMaxSize(1f)) {
                   Text("street number and name")
                   Text("city")

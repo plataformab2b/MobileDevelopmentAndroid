@@ -90,9 +90,11 @@ Column {
         TextField(
             label = {Text(text = "First Name")},
             placeholder = { Text("e.g. John") }
-            , value = nameInput.value, onValueChange = {
+            , value = nameInput.value,
+            onValueChange = {
             nameInput.value = it
         })
+
         FloatingActionButton(
             onClick = {
                 val intent = Intent(context, SecondActivity::class.java)
