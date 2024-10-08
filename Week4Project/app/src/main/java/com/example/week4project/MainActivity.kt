@@ -53,7 +53,6 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-
 @Composable
 fun SwitchBackgroundChange(modifier: Modifier) {
     var isSwitched = remember { mutableStateOf(false) }
