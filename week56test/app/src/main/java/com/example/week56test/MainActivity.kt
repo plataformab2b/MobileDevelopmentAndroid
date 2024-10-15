@@ -11,6 +11,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.result.registerForActivityResult
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -24,6 +26,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
@@ -41,28 +44,43 @@ import com.example.week56test.Views.ProductList
 import com.example.week56test.ui.theme.Week56testTheme
 
 class MainActivity : ComponentActivity() {
-    lateinit var plist: ArrayList<Product>
+    lateinit var vm : Lazy<ProductViewModel>
+
+    var startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+    {
+        result ->
+        if (result.resultCode == Activity.RESULT_OK){
+            val data : Intent? = result.data
+            val newProduct = data?.getParcelableExtra<Product>("newProduct")
+            if (newProduct != null){
+                // I am ready to update the ui and insert the new item to the list
+                vm.value.addNewProduct(newProduct)
+            }
+        }
+    }
+
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        var productRepo = ProductRepository()
-        // factory
-        var productVMFactory = ProductViewModelFactory(productRepo)
-
-        val productViewModel = ViewModelProvider(this,productVMFactory) [ProductViewModel::class.java]
-        plist = productViewModel.getProducts()
+      //  var productRepo = ProductRepository()
+      //  plist = productViewModel.getProducts()
 
         enableEdgeToEdge()
         setContent {
             Week56testTheme {
-                var cnx = LocalContext.current
-                updateUI(cnx,plist)
+                vm = viewModels<ProductViewModel>()
+                var plist = vm.value.stateList
+                updateUI(plist)
             }
         }
     }
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    private fun updateUI(con: Context, list: ArrayList<Product>){
+    private fun updateUI(list: SnapshotStateList<Product>){
+        var cnx = LocalContext.current
         Scaffold(
             modifier = Modifier.fillMaxSize(),
             topBar = {
@@ -75,9 +93,9 @@ class MainActivity : ComponentActivity() {
             },
             floatingActionButton = {
                 FloatingActionButton(onClick = {
-                    var intent = Intent(con, AddNewProduct::class.java)
-                    intent.putParcelableArrayListExtra("list",ArrayList(plist))
-                    startActivity(intent)
+                    var intent = Intent(cnx, AddNewProduct::class.java)
+                    // startActivity(intent)
+                    startForResult.launch(intent)
                 } ) {
                     Icon(Icons.Default.Add, contentDescription = "Add New Product")
                 }

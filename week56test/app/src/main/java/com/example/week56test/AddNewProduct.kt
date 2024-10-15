@@ -1,5 +1,7 @@
 package com.example.week56test
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 
@@ -25,15 +27,6 @@ class AddNewProduct : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-       //var mainlist = intent.getParcelableArrayListExtra<Product>("list")
-
-        var productRepo = ProductRepository()
-        // factory
-        var productVMFactory = ProductViewModelFactory(productRepo)
-        // view model
-       // val productViewModel = ViewModelProvider(this,productVMFactory)
-//        var mainlist =  productViewModel.getProducts() //ProductRepository().getProducts()
-
         enableEdgeToEdge()
         setContent {
             Week56testTheme {
@@ -45,7 +38,11 @@ class AddNewProduct : ComponentActivity() {
                             AddNewProductView(
                                 modifier =  Modifier.fillMaxSize().padding(innerPadding),
                                 done = { p->
-                                   // productViewModel.addNewProduct(p)
+                                    var data = Intent()
+                                    data.putExtra("newProduct",p)
+                                    setResult(Activity.RESULT_OK,data)
+                                   // the new product is ready
+                                    // I have to send it back to MainActivity
                                     finish()
                                 }
                             )

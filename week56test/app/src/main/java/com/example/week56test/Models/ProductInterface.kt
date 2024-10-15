@@ -1,6 +1,8 @@
 package com.example.week56test.Models
 
 interface ProductInterface {
-    fun getProducts() :  ArrayList<Product>
-    fun addNewProduct(p: Product)
+    fun getInitProducts() :  ArrayList<Product>
+    fun addNewProduct(p: Product):  ArrayList<Product>
+    // delete Product
+    // update Product
 }

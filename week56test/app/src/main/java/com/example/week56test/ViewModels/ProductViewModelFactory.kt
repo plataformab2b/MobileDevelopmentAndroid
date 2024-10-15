@@ -10,7 +10,7 @@ class ProductViewModelFactory(private val repo: ProductRepository) :
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
        if (modelClass.isAssignableFrom(ProductViewModel::class.java)){
-           return ProductViewModel(repo) as T
+           return ProductViewModel() as T
        }
         throw IllegalArgumentException("Unknow")
 

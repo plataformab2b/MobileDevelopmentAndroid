@@ -3,7 +3,8 @@ package com.example.week56test.Models
 class ProductRepository:ProductInterface {
     var list = ArrayList<Product>()
 
-    override fun getProducts(): ArrayList<Product> {
+    // from db or from the web
+    override fun getInitProducts(): ArrayList<Product> {
         list.add(    Product(1, "Hats", 40, 10.4))
         list.add(
             Product(2, "Tshirts", 50, 19.9))
@@ -12,8 +13,9 @@ class ProductRepository:ProductInterface {
         return list
     }
 
-    override fun addNewProduct(p: Product) {
+    override fun addNewProduct(p: Product):  ArrayList<Product> {
             list.add(p)
+            return list
     }
 
 

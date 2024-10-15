@@ -14,7 +14,6 @@ fun AddNewProductView(
     modifier: Modifier,
     done: (Product) -> Unit
 ) {
-
     var productID = remember { mutableStateOf("") }
     var productName = remember { mutableStateOf("") }
     var productQuantity = remember { mutableStateOf("") }
