@@ -37,7 +37,9 @@ fun ProductList(modifier: Modifier, list: SnapshotStateList<Product>) {
 
             ) {
                 Row (modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween){
+                    horizontalArrangement = Arrangement.SpaceBetween
+
+                ){
                     Column {
                         Text(text = "${Product.name}")
                         Text(text = "Quantity: ${Product.quantity}")
