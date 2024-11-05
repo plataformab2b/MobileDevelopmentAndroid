@@ -1,10 +1,8 @@
-package com.example.week4project.Navigation
+package com.example.week9_navigation.Navigation
 
 import androidx.compose.ui.graphics.vector.ImageVector
 
-open class Item(
-    var path: String,
-    var title: String,
-    var icon: ImageVector) {
-
-}
+open class Item (
+    val path:String,
+    val title: String,
+    val icon: ImageVector){}

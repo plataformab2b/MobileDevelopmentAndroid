@@ -18,31 +18,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 
-
 @Composable
-fun CallScreen() {
+fun CallScreen(){
     var cnx = LocalContext.current
     var phoneNumber by remember { mutableStateOf("") }
-
-    Column(modifier = Modifier.fillMaxWidth(),
+    Column(modifier = Modifier.fillMaxWidth().padding(top = 100.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
         OutlinedTextField(
             value = phoneNumber,
             onValueChange = { phoneNumber = it },
-            label = { Text("Phone number ") },
+            label = { Text("From Email Address") },
             modifier = Modifier.fillMaxWidth()
         )
-
         Button(onClick = {
             val intent = Intent(Intent.ACTION_DIAL).apply {
                 data = Uri.parse(phoneNumber)
             }
             cnx.startActivity(intent)
-
-        }){
-            Text("Call")
-        }
+        }) { Text("Call") }
     }
 }

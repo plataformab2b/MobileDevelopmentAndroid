@@ -15,18 +15,22 @@ import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.week4project.Model.Product
 import com.example.week4project.Model.ProductRepo
-import com.example.week4project.Navigation.NavGraph
+import com.example.week4project.Navigation.MyNavGraph
 import com.example.week4project.ViewModel.ProductViewModel
 import com.example.week4project.ViewModel.ProductViewModelFactory
+import com.example.week4project.Views.AdressScreen
 import com.example.week4project.Views.MyBottomBar
 import com.example.week4project.Views.MyFavButton
 import com.example.week4project.Views.MyTopBar
@@ -43,6 +47,7 @@ class MainActivity : ComponentActivity() {
         var mainlist =  myProductViewModel.getListOfProducts()
         setContent {
             Week4ProjectTheme {
+
                MyFirstScaffold(mainlist)
             }
         }
@@ -72,9 +77,7 @@ fun SwitchBackgroundChange(modifier: Modifier) {
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MyFirstScaffold(list: ArrayList<Product>) {
-
-    var navController = rememberNavController()
-    NavGraph(navController)
+    val navController = rememberNavController()
    Scaffold (
        bottomBar = { MyBottomBar(navController) },
        topBar = { MyTopBar() },
@@ -82,5 +85,20 @@ fun MyFirstScaffold(list: ArrayList<Product>) {
        floatingActionButtonPosition = FabPosition.Center
        ) {
 
-   }
+        innerPadding ->
+            Column {
+                MyNavGraph(navController = navController)
+            //  SwitchBackgroundChange(Modifier.padding(innerPadding))
+               // ProductList(Modifier.padding(innerPadding), list)
+            }
+        }
+}
+
+
+@Composable
+fun SecondScreen() {
+    Column (modifier =  Modifier.fillMaxSize(1f)) {
+        Text("Second")
+
+    }
 }

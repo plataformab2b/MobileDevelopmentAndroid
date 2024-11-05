@@ -27,60 +27,77 @@ import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavController
 import com.example.week4project.Model.Address
 import com.example.week4project.AddressActivity
-import com.example.week4project.Navigation.NavDesination
 import com.example.week4project.R
+import com.example.week9_navigation.Navigation.NavItem
 
 @Composable
 fun MyBottomBar(navController: NavController) {
-
-    val navItems = listOf(NavDesination.Call, NavDesination.Email, NavDesination.Search,NavDesination.Favorite)
+    val navItems = listOf(NavItem.Search, NavItem.Email, NavItem.Favorite, NavItem.Call)
     var selectedItem by rememberSaveable {
         mutableStateOf(0)
     }
-    NavigationBar{
+    NavigationBar {
         navItems.forEachIndexed { index, item ->
             NavigationBarItem(
                 selected = selectedItem == index,
                 onClick = {
-                    navController.navigate(item.path) {
-                        navController.graph.startDestinationRoute?.let { route ->
-                            popUpTo(route){
-                                saveState = true
-                            }
+                    selectedItem = index
+                    navController.navigate(item.path){
+                        navController.graph.startDestinationRoute?.let {
+                                route -> popUpTo(route){
+                                    saveState = true
+                                }
                         }
+                        launchSingleTop = true
+                        restoreState = true
                     }
-                }, icon = {
-                   Icon(imageVector =  item.icon, contentDescription = item.title)
-                }, label = {
-                   Text( item.title)
-                }
-            )
-
+                },
+                icon = {
+                    Icon(imageVector = item.icon, contentDescription = item.title)
+                },
+                label = {Text(item.title)})
         }
     }
-}
-//
+
+
+
+//    var cnx = LocalContext.current
+//    BottomAppBar {
 //        Row(modifier = Modifier.fillMaxWidth(1f) ,
 //            verticalAlignment = Alignment.CenterVertically,
 //            horizontalArrangement = Arrangement.SpaceEvenly
 //            ){
 //            Text("Search")
 //            IconButton(onClick = {
-//              // Go to Search
+//                val intent = Intent(Intent.ACTION_DIAL).apply {
+//                    data = Uri.parse("tel:4167771111")
+//                }
+//                cnx.startActivity(intent)
 //
 //            }) {
 //               Icon(painterResource(R.drawable.baseline_local_phone_24), contentDescription = null)
 //            }
-//
-//
 //            IconButton(onClick = {
-//                   // Go to Fav
+//                    var intent = Intent(cnx, AddressActivity::class.java)
+//                    intent.putExtra("name","Rania")
+//                    intent.putExtra("number", 33)
+//                    var myaddress = Address(22,"Yong","Toronto","m3a1ql")
+//                    intent.putExtra("myaddress",myaddress)
+//                    Log.d("In Main Activity", myaddress.street)
+//                    cnx.startActivity(intent)
 //
 //            }) {
 //                Icon(Icons.Default.Favorite, contentDescription = null)
 //            }
 //            IconButton(onClick = {
-//               // go to email
+//                val intent = Intent(Intent.ACTION_SEND).apply {
+//                    type = "*/*"
+//                    putExtra(Intent.EXTRA_EMAIL, "john@hotmail.com")
+//                    putExtra(Intent.EXTRA_BCC, "rania@hotmail.com")
+//                    putExtra(Intent.EXTRA_CC, "rania@hotmail.com")
+//                    putExtra(Intent.EXTRA_SUBJECT, "From My App")
+//                }
+//                cnx.startActivity(intent)
 //
 //            }) {
 //                Icon(Icons.Default.Email, contentDescription = null)
@@ -90,3 +107,4 @@ fun MyBottomBar(navController: NavController) {
 //        }
 //    }
 
+}
