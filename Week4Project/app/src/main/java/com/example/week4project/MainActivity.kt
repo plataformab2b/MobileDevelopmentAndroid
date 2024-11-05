@@ -21,8 +21,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.compose.rememberNavController
 import com.example.week4project.Model.Product
 import com.example.week4project.Model.ProductRepo
+import com.example.week4project.Navigation.NavGraph
 import com.example.week4project.ViewModel.ProductViewModel
 import com.example.week4project.ViewModel.ProductViewModelFactory
 import com.example.week4project.Views.MyBottomBar
@@ -41,7 +43,6 @@ class MainActivity : ComponentActivity() {
         var mainlist =  myProductViewModel.getListOfProducts()
         setContent {
             Week4ProjectTheme {
-
                MyFirstScaffold(mainlist)
             }
         }
@@ -71,17 +72,15 @@ fun SwitchBackgroundChange(modifier: Modifier) {
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MyFirstScaffold(list: ArrayList<Product>) {
+
+    var navController = rememberNavController()
+    NavGraph(navController)
    Scaffold (
-       bottomBar = { MyBottomBar() },
+       bottomBar = { MyBottomBar(navController) },
        topBar = { MyTopBar() },
        floatingActionButton = { MyFavButton() },
        floatingActionButtonPosition = FabPosition.Center
        ) {
 
-        innerPadding ->
-            Column {
-                SwitchBackgroundChange(Modifier.padding(innerPadding))
-               // ProductList(Modifier.padding(innerPadding), list)
-            }
-        }
+   }
 }
