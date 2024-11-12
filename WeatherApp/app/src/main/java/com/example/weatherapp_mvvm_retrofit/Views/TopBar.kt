@@ -2,6 +2,7 @@ package com.example.weatherapp_mvvm_retrofit.Views
 
 
 import android.app.SearchManager
+import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.widget.Toast
@@ -9,6 +10,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
@@ -31,6 +33,8 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import com.example.weatherapp_mvvm_retrofit.FavoriteActivity
+import com.example.weatherapp_mvvm_retrofit.WeatherActivity
 import com.example.weatherapp_mvvm_retrofit.viewModel.citiesViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -38,7 +42,7 @@ import com.example.weatherapp_mvvm_retrofit.viewModel.citiesViewModel
 fun TopBar(vm: citiesViewModel){
     var searchText by remember { mutableStateOf("") } // Query for SearchBar
     var active by remember { mutableStateOf(false) } // Active state for SearchBar
-
+    var cnx = LocalContext.current
     TopAppBar(
         title = { Text(text = searchText) } ,
         actions = {
@@ -83,6 +87,12 @@ fun TopBar(vm: citiesViewModel){
                     ) {
                     Text(text = searchText)
                 }
+            IconButton(onClick = {
+                var intent = Intent(cnx, FavoriteActivity::class.java)
+                cnx.startActivity(intent)
+            }) {
+                Icon(Icons.Default.Favorite, "")
+            }
 
 
 

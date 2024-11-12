@@ -9,8 +9,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.weatherapp_mvvm_retrofit.data.WeatherObject
 import kotlinx.coroutines.launch
 
-class WeatherViewModel() : ViewModel()  {
-    private val repository = AppRepository()
+class WeatherViewModel( private val repository: AppRepository) : ViewModel()  {
+
 
     var weatherO by mutableStateOf<WeatherObject?>(null)
         private set

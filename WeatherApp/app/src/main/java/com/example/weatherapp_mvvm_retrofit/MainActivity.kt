@@ -26,17 +26,32 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModelProvider
+import com.example.weatherapp_mvvm_retrofit.RoomDB.City
+import com.example.weatherapp_mvvm_retrofit.RoomDB.CityDataBase
+import com.example.weatherapp_mvvm_retrofit.Views.AlertComposable
 import com.example.weatherapp_mvvm_retrofit.ui.theme.WeatherAppMVVMRetrofitTheme
 import com.example.weatherapp_mvvm_retrofit.viewModel.citiesViewModel
 import com.example.weatherapp_mvvm_retrofit.Views.TopBar
+import com.example.weatherapp_mvvm_retrofit.viewModel.AppRepository
+import com.example.weatherapp_mvvm_retrofit.viewModel.ViewModelFactory
 import com.example.weatherapp_mvvm_retrofit.viewModel.WeatherViewModel
 
 class MainActivity : ComponentActivity() {
-    private val myViewModel : citiesViewModel by viewModels()
+
+
+
+
+   // private val myViewModel : citiesViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        val database = CityDataBase.getInstance(applicationContext)
+        val repository = AppRepository(database.getCityDao())
+        val myviewModelFactory = ViewModelFactory(repository)
+        val myViewModel = ViewModelProvider(this,myviewModelFactory)[citiesViewModel::class.java]
 
         setContent {
             WeatherAppMVVMRetrofitTheme {
@@ -46,7 +61,8 @@ class MainActivity : ComponentActivity() {
                         var list = myViewModel.cities
                     ListOfCities(
                             list = list,
-                            modifier = Modifier.padding(innerPadding)
+                            modifier = Modifier.padding(innerPadding),
+                        myViewModel
                         )
                 }
 
@@ -56,9 +72,12 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun ListOfCities(list: List<String>, modifier: Modifier = Modifier) {
+fun ListOfCities(list: List<String>,
+                 modifier: Modifier = Modifier,
+                 vm: citiesViewModel) {
     var selectedIndex by remember {mutableStateOf(-1)}
     var cnx = LocalContext.current
+    var showAlert by remember { mutableStateOf(false) }
 
     LazyColumn(
         modifier = modifier
@@ -73,9 +92,7 @@ fun ListOfCities(list: List<String>, modifier: Modifier = Modifier) {
                             if (selectedIndex != id) {
                                 selectedIndex = id
                                 Log.d("city", list[id])
-                                var intent = Intent(cnx, WeatherActivity::class.java)
-                                intent.putExtra("city",list[id])
-                               cnx.startActivity(intent)
+                                showAlert = true
                             }
                             else selectedIndex = -1
                         }
@@ -83,6 +100,22 @@ fun ListOfCities(list: List<String>, modifier: Modifier = Modifier) {
                 horizontalArrangement = Arrangement.SpaceBetween
             ){
                 Text(text = list.get(id))
+            }
+            if (showAlert){
+                AlertComposable(
+                    onWeather = {
+                    var intent = Intent(cnx, WeatherActivity::class.java)
+                                intent.putExtra("city",list[selectedIndex])
+                               cnx.startActivity(intent)
+                        showAlert = false
+                }, onSave = {
+                    vm.insertToDB(City(Math.random().toInt(),list[selectedIndex] ))
+                        showAlert = false
+                        var intent = Intent(cnx, WeatherActivity::class.java)
+                        intent.putExtra("city",list[selectedIndex])
+                        cnx.startActivity(intent)
+
+                })
             }
         }
     }

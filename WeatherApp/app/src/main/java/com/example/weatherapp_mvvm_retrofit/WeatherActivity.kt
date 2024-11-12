@@ -21,16 +21,29 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.ViewModelProvider
 import coil.compose.AsyncImage
+import com.example.weatherapp_mvvm_retrofit.RoomDB.CityDataBase
 import com.example.weatherapp_mvvm_retrofit.ui.theme.WeatherAppMVVMRetrofitTheme
+import com.example.weatherapp_mvvm_retrofit.viewModel.AppRepository
+import com.example.weatherapp_mvvm_retrofit.viewModel.ViewModelFactory
 import com.example.weatherapp_mvvm_retrofit.viewModel.WeatherViewModel
+import com.example.weatherapp_mvvm_retrofit.viewModel.WeatherViewModelFactory
 import com.example.weatherapp_mvvm_retrofit.viewModel.citiesViewModel
 
 class WeatherActivity : ComponentActivity(){
     private val myViewModel : WeatherViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-       var city = intent.getStringExtra("city")
+
+        val database = CityDataBase.getInstance(applicationContext)
+        val repository = AppRepository(database.getCityDao())
+        val myviewModelFactory = WeatherViewModelFactory(repository)
+        val myViewModel = ViewModelProvider(this,myviewModelFactory)[WeatherViewModel::class.java]
+
+
+
+        var city = intent.getStringExtra("city")
         if (city != null) {
             myViewModel.getWeather(city)
         }
