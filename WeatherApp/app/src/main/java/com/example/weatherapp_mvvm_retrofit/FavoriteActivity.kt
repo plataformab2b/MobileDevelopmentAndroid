@@ -29,6 +29,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.example.weatherapp_mvvm_retrofit.RoomDB.City
 import com.example.weatherapp_mvvm_retrofit.RoomDB.CityDataBase
 import com.example.weatherapp_mvvm_retrofit.Views.AlertComposable
@@ -51,29 +55,35 @@ class FavoriteActivity : ComponentActivity()  {
 
         setContent {
             WeatherAppMVVMRetrofitTheme {
+                val navController = rememberNavController()
                 Scaffold(
                     topBar = {
                         TopAppBar(title= { Text("Favorite Cities ") })
                     },
                 ) { innerPadding ->
-                  //  var list = myViewModel.cities
-                    ListOfDBCities(
-                        list = myViewModel.getDBCities(),
-                        modifier = Modifier.padding(innerPadding),myViewModel
-                    )
+                    NavHost(
+                        navController = navController,
+                        startDestination = "favoriteList",
+                        modifier = Modifier.padding(innerPadding)
+                    ) {
+                        composable("favoriteList") {
+                            ListOfDBCities(
+                                list = myViewModel.getDBCities(),
+                                modifier = Modifier.padding(innerPadding), myViewModel, navController
+                            )
+                        }
+                    }
                 }
-
             }
         }
     }
 
-
     @Composable
     fun ListOfDBCities(list: List<City>,
                        modifier: Modifier = Modifier,
-                       vm: citiesViewModel
+                       vm: citiesViewModel,
+                       navController: NavHostController
     ) {
-
         LazyColumn(
             modifier = modifier
         ) {
@@ -86,17 +96,12 @@ class FavoriteActivity : ComponentActivity()  {
                 ){
                     Text(text = list.get(id).cityName)
                     IconButton(onClick = {
-                            vm.deleteOneCity( list.get(id))
+                        vm.deleteOneCity(list.get(id))
                     }) {
                         Icon(Icons.Default.Delete,"")
                     }
                 }
-
             }
         }
-
-
-
     }
-
 }
