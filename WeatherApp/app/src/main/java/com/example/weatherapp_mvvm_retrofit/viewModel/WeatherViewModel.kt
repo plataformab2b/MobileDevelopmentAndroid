@@ -27,4 +27,8 @@ class WeatherViewModel( private val repository: AppRepository) : ViewModel()  {
             }
         }
     }
+
+    fun handleNavigationArguments(arguments: Bundle) {
+        // Handle navigation arguments here
+    }
 }

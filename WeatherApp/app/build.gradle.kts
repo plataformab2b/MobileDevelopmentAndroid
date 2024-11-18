@@ -84,4 +84,13 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+    // Jetpack Compose dependencies
+    implementation("androidx.compose.ui:ui:1.0.0")
+    implementation("androidx.compose.material:material:1.0.0")
+    implementation("androidx.compose.ui:ui-tooling-preview:1.0.0")
+    implementation("androidx.compose.runtime:runtime-livedata:1.0.0")
+    implementation("androidx.compose.runtime:runtime-rxjava2:1.0.0")
+
+    // Jetpack Compose navigation dependencies
+    implementation("androidx.navigation:navigation-compose:2.4.0-alpha10")
 }
